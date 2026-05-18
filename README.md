@@ -3,6 +3,7 @@
 **Student:** Shawn Wilkinson
 **Course:** MSSE 642 – Software Assurance
 **Institution:** Regis University
+**Professor:** Randall Granier
 
 ---
 
