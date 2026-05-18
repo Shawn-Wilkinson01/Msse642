@@ -111,7 +111,7 @@ Kali Linux was downloaded from the [official Kali website](https://www.kali.org/
 2. In VirtualBox, went to *File → Import Appliance* and selected the downloaded image.
 3. Completed the import wizard with default settings.
 4. Assigned the Host-only Network adapter to the VM under *Settings → Network*.
-5. Booted the VM and logged in as user `swmsse642`.
+5. Booted the VM and logged in with username `kali` and password `kali`.
 6. Updated the system:
    ```bash
    sudo apt update && sudo apt upgrade -y
@@ -210,7 +210,7 @@ To verify that the Kali Linux attacker machine can reach the Metasploitable targ
    ```
 3. Confirmed both VMs were on the same Host-only Network within VirtualBox.
 
-**Screenshot – Kali network configuration (NAT Network):**
+**Screenshot – Kali network configuration (Host-only Network):**
 
 ![Kali Network Config](images/09-kali-network-config.png)
 
