@@ -39,9 +39,9 @@ This environment mirrors industry-standard pen testing setups and will be used f
 | **Hypervisor Type** | Type 2 – Oracle VirtualBox |
 | **Attacker VM** | Kali Linux 2026.1 (virtualbox-amd64) |
 | **Target VM** | Metasploitable |
-| **VM Network Mode** | NAT Network (VirtualBox) |
+| **VM Network Mode** | Host-only Network |
 
-> **Note on Hypervisor Choice:** Oracle VirtualBox was chosen because it is free, open-source, and Kali Linux provides a pre-built VirtualBox image. NAT Network mode allows VMs to communicate with each other and access the internet through the host, while remaining isolated from external networks.
+> **Note on Hypervisor Choice:** Oracle VirtualBox was chosen because it is free, open-source, and Kali Linux provides a pre-built VirtualBox image. Host-only Network mode allows VMs to communicate with each other and access the internet through the host, while remaining isolated from external networks.
 
 ---
 
@@ -59,8 +59,8 @@ Below is the architectural diagram of the lab environment:
 │    │  Oracle VirtualBox (Type 2 Hypervisor)   │         │
 │    │                                          │         │
 │    │   ┌─────────────────────────────────┐   │         │
-│    │   │  VirtualBox NAT Network         │   │         │
-│    │   │       (10.0.2.0/24)             │   │         │
+│    │   │  VirtualBox Host-only Network   │   │         │
+│    │   │     (192.168.56.0/24)           │   │         │
 │    │   │                                 │   │         │
 │    │   │  ┌──────────────────────────┐   │   │         │
 │    │   │  │   Kali Linux 2026.1      │   │   │         │
@@ -74,7 +74,7 @@ Below is the architectural diagram of the lab environment:
 │    │   │  │   Metasploitable          │   │   │         │
 │    │   │  │   (Target / Victim)      │   │   │         │
 │    │   │  │   User: msfadmin         │   │   │         │
-│    │   │  │   IP:   10.0.2.15        │   │   │         │
+│    │   │  │   IP:   192.168.56.2        │   │   │         │
 │    │   │  │   Services: Apache,      │   │   │         │
 │    │   │  │   Tomcat, SSH, FTP ...   │   │   │         │
 │    │   │  └──────────────────────────┘   │   │         │
@@ -92,7 +92,7 @@ Oracle VirtualBox was downloaded and installed from the [VirtualBox website](htt
 **Steps taken:**
 1. Downloaded the VirtualBox installer for macOS from `virtualbox.org`.
 2. Ran the installer and completed the setup wizard with default options.
-3. Configured each VM's network adapter to NAT Network via *Settings → Network → Attached to: NAT Network*.
+3. Configured each VM's network adapter to Host-only Network via *Settings → Network → Attached to: Host-only Network*.
 
 **Screenshot – VirtualBox running with Kali Linux VM:**
 
@@ -110,7 +110,7 @@ Kali Linux was downloaded from the [official Kali website](https://www.kali.org/
 1. Downloaded the Kali Linux VirtualBox image from `kali.org`.
 2. In VirtualBox, went to *File → Import Appliance* and selected the downloaded image.
 3. Completed the import wizard with default settings.
-4. Assigned the NAT Network adapter to the VM under *Settings → Network*.
+4. Assigned the Host-only Network adapter to the VM under *Settings → Network*.
 5. Booted the VM and logged in as user `swmsse642`.
 6. Updated the system:
    ```bash
@@ -176,7 +176,7 @@ Metasploitable is an intentionally vulnerable Linux VM designed as a penetration
 **Steps taken:**
 1. Downloaded the Metasploitable VM image.
 2. In VirtualBox, imported the VM using *File → Import Appliance*.
-3. Assigned the NAT Network adapter under *Settings → Network*.
+3. Assigned the Host-only Network adapter under *Settings → Network*.
 4. Booted the VM; the boot sequence showed services starting cleanly (Apache, Tomcat, cron — all `[OK]`).
 5. Logged in with the default credentials displayed in the boot banner: `msfadmin` / `msfadmin`.
 6. Confirmed network interface and IP address:
@@ -194,7 +194,7 @@ Metasploitable is an intentionally vulnerable Linux VM designed as a penetration
 
 ![Metasploitable ifconfig](images/08-metasploitable-ifconfig.png)
 
-> *The screenshot shows `ifconfig` output from Metasploitable after login, confirming the `eth0` interface is up with IP address `10.0.2.15`.*
+> *The screenshot shows `ifconfig` output from Metasploitable after login, confirming the `eth0` interface is up with IP address `192.168.56.2`.*
 
 ---
 
@@ -203,24 +203,24 @@ Metasploitable is an intentionally vulnerable Linux VM designed as a penetration
 To verify that the Kali Linux attacker machine can reach the Metasploitable target, a connectivity test was performed from within the Kali Linux VM.
 
 **Steps taken:**
-1. Confirmed Metasploitable's IP address from its terminal (`ifconfig`): `10.0.2.15`.
+1. Confirmed Metasploitable's IP address from its terminal (`ifconfig`): `192.168.56.2`.
 2. From the Kali Linux terminal, ran:
    ```bash
-   ping -c 4 10.0.2.15
+   ping -c 4 192.168.56.2
    ```
-3. Confirmed both VMs were on the same NAT Network within VirtualBox.
+3. Confirmed both VMs were on the same Host-only Network within VirtualBox.
 
 **Screenshot – Kali network configuration (NAT Network):**
 
 ![Kali Network Config](images/09-kali-network-config.png)
 
-> *The screenshot shows Kali's VirtualBox network adapter set to NAT Network mode, allowing VM-to-VM communication and internet access through the host machine.*
+> *The screenshot shows Kali's VirtualBox network adapter set to Host-only Network mode, allowing VM-to-VM communication and internet access through the host machine.*
 
 **Screenshot – Ping from Kali to Metasploitable:**
 
 ![Ping Test](images/10-ping-metasploitable.png)
 
-> *The screenshot shows network activity from the Kali Linux terminal confirming connectivity to the Metasploitable target on the NAT Network.*
+> *The screenshot shows network activity from the Kali Linux terminal confirming connectivity to the Metasploitable target on the Host-only Network.*
 
 ---
 
