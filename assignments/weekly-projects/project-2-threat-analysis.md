@@ -1,7 +1,7 @@
 # Assignment #2: Vulnerability Analysis — Hiking Club Threat Model
 
 **Course:** MSSE 642 – Software Assurance  
-**Authors:** Shawn Wilkinson, Emad Fattah, Abdullah Bahir  
+**Authors:** Abdullah Bahir, Emad Fattah, Shawn Wilkinson  
 **Date:** May 2026
 
 ---
