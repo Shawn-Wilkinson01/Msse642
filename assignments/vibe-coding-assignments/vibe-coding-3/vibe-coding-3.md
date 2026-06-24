@@ -55,29 +55,16 @@ The interactive format makes the stakes visible. When a student clicks "Trigger 
 
 I also wanted the tool to reflect how misconfigurations are actually discovered — not through code review but through automated scanning. The header scanner tab simulates what a tool like OWASP ZAP or securityheaders.com would report. The config files tab simulates a directory buster probing for predictable filenames. The admin panel tab simulates credential stuffing against a default-credential login. The tool teaches the attacker's workflow, not just the defender's checklist.
 
-### Landing Page
+### Screenshots
 
-![Landing Page — Security Headers Tab](images/01-landing-page.png)
-
-### Security Headers Scan
-
-![Security Headers — Vulnerable vs. Secure](images/02-security-headers.png)
-
-### Debug Mode Error
-
-![Debug Mode — Stack Trace Exposed](images/03-debug-mode.png)
-
-### Directory Listing
-
-![Directory Listing — Files Exposed](images/04-directory-listing.png)
-
-### Config Files Probe
-
-![Config Files — .env Contents Exposed](images/05-config-files.png)
-
-### Admin Panel with Lockout
-
-![Admin Panel — Default Credentials and Lockout](images/06-admin-panel.png)
+| Tab | Description |
+|-----|-------------|
+| ![Landing Page](images/01-landing-page.png) | Landing page — Security Headers tab |
+| ![Security Headers](images/02-security-headers.png) | Headers scan: 0/5 vs. 5/5 |
+| ![Debug Mode](images/03-debug-mode.png) | Stack trace with credentials exposed |
+| ![Directory Listing](images/04-directory-listing.png) | File browser exposing sensitive files |
+| ![Config Files](images/05-config-files.png) | .env contents served as plain text |
+| ![Admin Panel](images/06-admin-panel.png) | Default credentials + lockout demo |
 
 ---
 
