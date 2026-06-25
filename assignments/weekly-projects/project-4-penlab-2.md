@@ -104,6 +104,9 @@ Claude Code was prompted conversationally to build the application incrementally
 | ![Login Page](images/p4-03-login.png) | JWT login form |
 | ![Admin Dashboard](images/p4-04-admin.png) | Protected admin dashboard (authenticated) |
 | ![Events Page](images/p4-05-events.png) | Upcoming events listing |
+| ![Members Page](images/p4-06-members.png) | Club member directory |
+| ![Noticeboard](images/p4-07-noticeboard.png) | Club announcements / noticeboard |
+| ![Trail Detail](images/p4-08-trail-detail.png) | Individual trail detail page |
 
 ---
 
