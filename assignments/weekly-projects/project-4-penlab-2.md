@@ -23,22 +23,22 @@
 
 | PHASE | DESCRIPTION | TOOL SELECTED |
 |-------|-------------|---------------|
-| **Website Penetration Testing: Information Gathering (Ch 14)** | In the information-gathering phase, testers collect as much intelligence about the target as possible before launching any active attacks. For a web application like the Hiking Club site, this means mapping the domain infrastructure, discovering hidden directories and files, identifying the server technology stack, harvesting email addresses and employee names through open-source intelligence (OSINT), and enumerating DNS records. The goal is to build a complete picture of the attack surface without alerting the target. Passive techniques (WHOIS lookups, DNS enumeration, search-engine dorking) are used first to avoid detection, followed by semi-active techniques such as directory brute-forcing on the live site. | **Maltego** |
+| **Website Penetration Testing: Information Gathering (Ch 14)** | In the information-gathering phase, testers collect as much intelligence about the target as possible before launching any active attacks. For a web application like the Hiking Club site, this means mapping the domain infrastructure, discovering hidden directories and files, identifying the server technology stack, harvesting email addresses and employee names through open-source intelligence (OSINT), and enumerating DNS records. The goal is to build a complete picture of the attack surface without alerting the target. Passive techniques (WHOIS lookups, DNS enumeration, search-engine dorking) are used first to avoid detection, followed by semi-active techniques such as directory brute-forcing on the live site. Burp Suite's passive proxy mode is ideal for this phase because it silently records every HTTP request and response the browser makes as the tester manually browses the target application, building a complete site map without sending a single active probe. | **Burp Suite** |
 | **Website Penetration Testing: Gaining Access (Ch 15)** | In the gaining-access phase, testers use the intelligence gathered in Phase 1 to actively probe the application for exploitable vulnerabilities. For a web application this typically means testing authentication endpoints for weak credentials, injecting payloads into input fields (SQL injection, XSS, command injection), testing for broken access control (IDOR, privilege escalation), scanning for known CVEs in the server or framework versions, and fuzzing API endpoints. Every finding is confirmed with a proof-of-concept that demonstrates actual exploitability, not just theoretical risk. For the Hiking Club application, particular attention is paid to the login endpoint, the JWT authentication implementation, and the admin-only routes. | **OWASP ZAP** |
 
 ---
 
 ### Tool Descriptions
 
-#### Maltego
+#### Burp Suite
 
-**Vendor website:** https://www.maltego.com
+**Vendor website:** https://portswigger.net/burp
 
-Maltego is a powerful open-source intelligence (OSINT) and graphical link-analysis tool designed to visualize relationships between pieces of information gathered from public sources. It uses "transforms" — automated queries against DNS providers, WHOIS registries, social networks, search engines, and threat intelligence feeds — to map out the infrastructure surrounding a target domain. The result is an interactive graph that connects domains, IP addresses, email addresses, employee names, and network blocks, giving the tester a comprehensive picture of the attack surface before any active exploitation begins.
+Burp Suite is an integrated platform for web application security testing developed by PortSwigger. At its core is an intercepting HTTP/HTTPS proxy that captures all traffic between the browser and the target server, giving the tester full visibility into every request and response — including cookies, headers, authentication tokens, and POST body parameters — that would otherwise be invisible. The Community Edition (free) includes the proxy, a site-mapper, a repeater for manually replaying and modifying requests, and a decoder/encoder; the Professional edition adds an automated scanner, intruder module for fuzzing and brute-forcing, and a sequencer for analyzing session token randomness.
 
-**Included in Kali Linux 2019?** Yes — Maltego Community Edition is bundled with Kali Linux 2019 and available in the Applications → Information Gathering menu. A free Paterva account is required to activate the community transforms.
+**Included in Kali Linux 2019?** Yes — Burp Suite Community Edition is bundled with Kali Linux 2019 and available under Applications → Web Application Analysis → burpsuite. It requires Java; Kali includes the necessary JRE. The Professional edition must be licensed separately from PortSwigger.
 
-**Use for the Hiking Club Application:** In the information-gathering phase for the Hiking Club app, Maltego would be used to enumerate all DNS records associated with the application's hosting domain, identify the IP ranges allocated to the server, and discover any related subdomains (e.g., staging, admin, API). Its WHOIS and email-harvesting transforms would surface contact information and usernames that could be used in later social-engineering or credential-stuffing attacks. The resulting graph would also reveal the CDN provider, mail server configuration (which may expose SPF/DMARC misconfigurations), and any third-party services integrated into the site — each of which represents an additional attack vector to investigate in subsequent phases.
+**Use for the Hiking Club Application:** During information gathering for the Hiking Club app, Burp Suite's proxy would be configured as the browser's HTTP proxy (localhost:8080). As the tester manually browses every page — home, trails, events, members, login, and admin — Burp's Target → Site Map silently records every endpoint, parameter, and header without sending any active probes. The HTTP History tab captures the full request/response for the `POST /api/auth/login` call, revealing the exact JSON payload format and the JWT structure returned in the response. Burp's Spider can then be run against the fully mapped site to discover any endpoints not reached during manual browsing, and the Repeater tool is used to replay individual requests with modified parameters to manually confirm findings discovered later in the gaining-access phase.
 
 ---
 
@@ -300,7 +300,7 @@ The absence of SQL injection findings validates the use of Drizzle ORM with para
 *References:*
 
 - [OWASP ZAP Documentation](https://www.zaproxy.org/docs/)
-- [Maltego Documentation](https://docs.maltego.com)
+- [Burp Suite Documentation](https://portswigger.net/burp/documentation)
 - [Sing, Learn Kali Linux 2019, Chapters 14–15]
 - [OWASP Web Security Testing Guide](https://owasp.org/www-project-web-security-testing-guide/)
 - [Hiking Club App Repository](https://github.com/Shawn-Wilkinson01/hiking-club-app)
